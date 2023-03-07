@@ -8,3 +8,15 @@ class initEvent extends UserEvent {
 
   initEvent(this.user);
 }
+
+class emailEvent extends UserEvent {
+  final String? email;
+
+  emailEvent(this.email);
+}
+
+class passwordEvent extends UserEvent {
+  final String? password;
+
+  passwordEvent(this.password);
+}

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:login/Models/usuario.dart';
 import 'package:login/Token/simulador_token.dart';
 
 class HomeScreen extends StatelessWidget {
-  List<Usuario> login;
-  HomeScreen({super.key, required this.login});
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

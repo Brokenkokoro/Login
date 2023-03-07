@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:login/Models/models.dart';
-import 'package:login/Token/simulador_token.dart';
 import 'package:login/Widgets/widgets.dart';
 
+import '../Token/simulador_token.dart';
 import '../bloc/user_bloc.dart';
 import '../ui/input_decorations.dart';
 
 class LoginScreen extends StatelessWidget {
-  List<Usuario> login;
-  LoginScreen({super.key, required this.login});
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +26,11 @@ class LoginScreen extends StatelessWidget {
                         style: Theme.of(context).textTheme.headlineLarge),
                     const SizedBox(height: 30),
                     BlocBuilder<UserBloc, UserState>(
-                      builder: (_, state) {
-                        return _LoginForm(user: state.user, login: login);
+                      builder: (context, state) {
+                        return _LoginForm(
+                            login: state.login,
+                            user: state.user,
+                            validator: state.userExist);
                       },
                     )
                   ],
@@ -43,16 +45,19 @@ class LoginScreen extends StatelessWidget {
 }
 
 class _LoginForm extends StatelessWidget {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  List<User> login;
   User? user;
-  List<Usuario> login;
+  bool validator;
+  _LoginForm({this.user, required this.validator, required this.login});
 
-  _LoginForm({this.user, required this.login});
   @override
   Widget build(BuildContext context) {
-    String pass = '';
-    String correo = '';
+    String? email = user?.email;
+    String password = "";
     return Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
+        key: formKey,
+        autovalidateMode: AutovalidateMode.values.last,
         child: Column(
           children: [
             TextFormField(
@@ -62,10 +67,10 @@ class _LoginForm extends StatelessWidget {
                   hintText: 'john.doe@gmail.com',
                   labelText: 'Correo electrónico',
                   prefixIcon: Icons.alternate_email_rounded),
-              onFieldSubmitted: (value) {},
+              onChanged: (value) {
+                email = value;
+              },
               validator: (value) {
-                correo = value ?? correo;
-
                 String pattern =
                     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
                 RegExp regExp = RegExp(pattern);
@@ -83,9 +88,8 @@ class _LoginForm extends StatelessWidget {
                   hintText: '*****',
                   labelText: 'Contraseña',
                   prefixIcon: Icons.lock_outline),
+              onChanged: (value) => password = value,
               validator: (value) {
-                pass = value ?? pass;
-
                 return (value != null && value.length >= 3)
                     ? null
                     : 'La contraseña debe de ser de 6 caracteres';
@@ -106,25 +110,31 @@ class _LoginForm extends StatelessWidget {
                       style: TextStyle(color: Colors.white),
                     )),
                 onPressed: () {
-                  final user2 = User(correo: correo, contrasena: pass);
-                  BlocProvider.of<UserBloc>(context).add(initEvent(user2));
-                  if (user?.contrasena == login[0].contrasena &&
-                      user?.correo == login[0].correo) {
+                  print(user?.email);
+                  if (email == login[0].email &&
+                      password == login[0].password) {
+                    BlocProvider.of<UserBloc>(context, listen: false)
+                        .add(emailEvent(email));
+                    BlocProvider.of<UserBloc>(context)
+                        .add(passwordEvent(password));
                     TokenSimulator.existeToken = true;
-                    TokenSimulator.token = login[0].token;
                     TokenSimulator.userToken = 'Goku';
 
                     Navigator.pushReplacementNamed(context, 'home');
                   }
-                  if (user?.contrasena == login[1].contrasena &&
-                      user?.correo == login[1].correo) {
+
+                  if (email == login[1].email &&
+                      password == login[1].password) {
+                    BlocProvider.of<UserBloc>(context, listen: false)
+                        .add(emailEvent(email));
+                    BlocProvider.of<UserBloc>(context)
+                        .add(passwordEvent(password));
                     TokenSimulator.existeToken = true;
-                    TokenSimulator.token = login[1].token;
-                    TokenSimulator.userToken = 'Vegeta';
+                    TokenSimulator.userToken = 'vegeta';
 
                     Navigator.pushReplacementNamed(context, 'home');
                   }
-                })
+                }),
           ],
         ));
   }
@@ -146,3 +156,20 @@ class _LoginForm extends StatelessWidget {
 
                 
               }**/
+
+               /** if (user?.contrasena == login[0].contrasena &&
+                      user?.correo == login[0].correo) {
+                    TokenSimulator.existeToken = true;
+                    TokenSimulator.token = login[0].token;
+                    TokenSimulator.userToken = 'Goku';
+
+                    Navigator.pushReplacementNamed(context, 'home');
+                  }
+                  if (user?.contrasena == login[1].contrasena &&
+                      user?.correo == login[1].correo) {
+                    TokenSimulator.existeToken = true;
+                    TokenSimulator.token = login[1].token;
+                    TokenSimulator.userToken = 'Vegeta';
+
+                    Navigator.pushReplacementNamed(context, 'home');
+                  }**/
