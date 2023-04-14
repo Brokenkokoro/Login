@@ -30,7 +30,6 @@ class HomeScreen extends StatelessWidget {
                     )),
                 onPressed: () {
                   TokenSimulator.existeToken = false;
-                  TokenSimulator.token = '';
                   TokenSimulator.userToken = '';
 
                   Navigator.pushReplacementNamed(context, 'login');

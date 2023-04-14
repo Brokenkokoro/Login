@@ -10,13 +10,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc() : super(UserInitial()) {
     on<initEvent>((event, emit) => emit(SetState(event.user)));
 
-    on<emailEvent>(
-      (event, emit) => emit(SetState(state.user!.copyWith(email: event.email))),
-    );
+    on<emailEvent>((event, emit) =>
+        emit(SetState(state.user!.copyWith(email: event.email))));
 
-    on<passwordEvent>(
-      (event, emit) =>
-          emit(SetState(state.user!.copyWith(password: event.password))),
-    );
+    on<passwordEvent>((event, emit) =>
+        emit(SetState(state.user!.copyWith(password: event.password))));
+    on<userExistEvent>(
+        (event, emit) => emit(SetUserExistState(event.userExist)));
   }
 }

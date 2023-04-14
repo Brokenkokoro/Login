@@ -20,3 +20,9 @@ class passwordEvent extends UserEvent {
 
   passwordEvent(this.password);
 }
+
+class userExistEvent extends UserEvent {
+  final bool userExist;
+
+  userExistEvent(this.userExist);
+}

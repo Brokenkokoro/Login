@@ -102,15 +102,7 @@ class _LoginForm extends StatelessWidget {
                 disabledColor: Colors.grey,
                 elevation: 0,
                 color: Colors.deepPurple,
-                child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 80, vertical: 15),
-                    child: const Text(
-                      'Log In',
-                      style: TextStyle(color: Colors.white),
-                    )),
                 onPressed: () {
-                  print(user?.email);
                   if (email == login[0].email &&
                       password == login[0].password) {
                     BlocProvider.of<UserBloc>(context, listen: false)
@@ -134,7 +126,14 @@ class _LoginForm extends StatelessWidget {
 
                     Navigator.pushReplacementNamed(context, 'home');
                   }
-                }),
+                },
+                child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 80, vertical: 15),
+                    child: const Text(
+                      'Log In',
+                      style: TextStyle(color: Colors.white),
+                    ))),
           ],
         ));
   }

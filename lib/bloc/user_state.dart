@@ -20,19 +20,9 @@ class SetState extends UserState {
   final User newUser;
 
   SetState(this.newUser) : super(user: newUser);
-  /**{
-    if (newUser.correo == login[0].correo &&
-        newUser.contrasena == login[0].contrasena) {
-      userExist = true;
-      TokenSimulator.existeToken = true;
-      TokenSimulator.userToken = 'Goku';
-    }
+}
 
-    if (newUser.correo == login[1].correo &&
-        newUser.contrasena == login[1].contrasena) {
-      userExist = true;
-      TokenSimulator.existeToken = true;
-      TokenSimulator.userToken = 'Vegeta';
-    }
-  }**/
+class SetUserExistState extends UserState {
+  final bool newUserExist;
+  SetUserExistState(this.newUserExist);
 }
